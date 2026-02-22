@@ -21,11 +21,12 @@ Flow:
 
 ## Current Repository Status
 
-The repository now includes initial implementation scaffolding for **Phase 1 (Authentication)**:
+The repository now includes implementation scaffolding for **Phase 1 (Authentication)** and **Phase 2 (Blog Core)**:
 
 - `backend/InsightHubApi` with MongoDB-backed register/login/user-list APIs.
 - `frontend/insighthub-web` with React + TypeScript routes for `/login`, `/register`, `/admin`, `/writer`, and `/home`.
 - Role-based redirect behavior after login (Admin → `/admin`, Writer → `/writer`, Reader → `/home`).
+- Blog core API scaffolding for posts/categories and writer UI routes (`/writer/dashboard`, `/writer/create`, `/writer/edit`).
 
 ## 1) Local Prerequisites
 
