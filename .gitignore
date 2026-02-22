@@ -1,0 +1,33 @@
+# Backend
+backend/InsightHubApi/bin/
+backend/InsightHubApi/obj/
+backend/InsightHubApi/*.user
+backend/InsightHubApi/*.suo
+backend/InsightHubApi/*.vs
+
+# Frontend
+frontend/insighthub-web/node_modules/
+frontend/insighthub-web/build/
+frontend/insighthub-web/.env
+
+# General
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# OS
+*.~
+
+# Ignore npm debug logs
+npm-debug.log*
+
+# Ignore coverage reports
+coverage/
+
+# Ignore environment files
+.env*
