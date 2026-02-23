@@ -7,10 +7,18 @@ namespace InsightHubApi.Services;
 public class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IUserRepository _userRepository;
 
-    public PostService(IPostRepository postRepository)
+    public PostService(
+        IPostRepository postRepository,
+        ICategoryRepository categoryRepository,
+        IUserRepository userRepository
+    )
     {
         _postRepository = postRepository;
+        _categoryRepository = categoryRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<PostResponseDto> CreateAsync(CreatePostRequestDto request)
@@ -40,6 +48,24 @@ public class PostService : IPostService
         return posts.Select(ToDto).ToList();
     }
 
+    public async Task<List<ReaderPostDto>> GetPublishedAsync(string? categoryId = null)
+    {
+        var posts = await _postRepository.GetPublishedAsync(categoryId);
+        return await EnrichReaderPosts(posts);
+    }
+
+    public async Task<ReaderPostDto?> GetPublishedByIdAsync(string id)
+    {
+        var post = await _postRepository.GetByIdAsync(id);
+        if (post is null || post.Status != "Published")
+        {
+            return null;
+        }
+
+        var enriched = await EnrichReaderPosts([post]);
+        return enriched.FirstOrDefault();
+    }
+
     public async Task<PostResponseDto?> UpdateAsync(string id, UpdatePostRequestDto request)
     {
         var updated = await _postRepository.UpdateAsync(
@@ -59,6 +85,27 @@ public class PostService : IPostService
     public async Task<bool> DeleteAsync(string id)
     {
         return await _postRepository.DeleteAsync(id);
+    }
+
+    private async Task<List<ReaderPostDto>> EnrichReaderPosts(List<Post> posts)
+    {
+        var categories = await _categoryRepository.GetAllAsync();
+        var users = await _userRepository.GetAllAsync();
+
+        var categoryMap = categories.ToDictionary(c => c.Id, c => c.Name);
+        var authorMap = users.ToDictionary(u => u.Id, u => u.Name);
+
+        return posts.Select(post => new ReaderPostDto(
+            post.Id,
+            post.Title,
+            post.Content,
+            post.CategoryId,
+            categoryMap.GetValueOrDefault(post.CategoryId, "Unknown Category"),
+            post.AuthorId,
+            authorMap.GetValueOrDefault(post.AuthorId, "Unknown Author"),
+            post.Status,
+            post.CreatedAt
+        )).ToList();
     }
 
     private static PostResponseDto ToDto(Post post)

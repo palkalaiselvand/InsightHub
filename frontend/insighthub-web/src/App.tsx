@@ -1,16 +1,17 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import RouteGuard from "./components/RouteGuard";
 import CategoriesAdminLitePage from "./pages/CategoriesAdminLitePage";
+import CategoryPage from "./pages/CategoryPage";
 import DashboardPage from "./pages/DashboardPage";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import PostDetailsPage from "./pages/PostDetailsPage";
 import RegisterPage from "./pages/RegisterPage";
 import WriterCreatePage from "./pages/WriterCreatePage";
 import WriterDashboardPage from "./pages/WriterDashboardPage";
 import WriterEditPage from "./pages/WriterEditPage";
-
-function HomePage() {
-  return <DashboardPage title="Reader Home" />;
-}
+import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminPostsPage from "./pages/AdminPostsPage";
 
 export default function App() {
   return (
@@ -68,6 +69,38 @@ export default function App() {
         element={
           <RouteGuard>
             <HomePage />
+          </RouteGuard>
+        }
+      />
+      <Route
+        path="/post/:id"
+        element={
+          <RouteGuard>
+            <PostDetailsPage />
+          </RouteGuard>
+        }
+      />
+      <Route
+        path="/category/:id"
+        element={
+          <RouteGuard>
+            <CategoryPage />
+          </RouteGuard>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <RouteGuard role="Admin">
+            <AdminUsersPage />
+          </RouteGuard>
+        }
+      />
+      <Route
+        path="/admin/posts"
+        element={
+          <RouteGuard role="Admin">
+            <AdminPostsPage />
           </RouteGuard>
         }
       />

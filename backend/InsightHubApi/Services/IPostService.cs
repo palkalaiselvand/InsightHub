@@ -10,6 +10,10 @@ public interface IPostService
 
     Task<List<PostResponseDto>> GetAllAsync();
 
+    Task<List<ReaderPostDto>> GetPublishedAsync(string? categoryId = null);
+
+    Task<ReaderPostDto?> GetPublishedByIdAsync(string id);
+
     Task<PostResponseDto?> UpdateAsync(string id, UpdatePostRequestDto request);
 
     Task<bool> DeleteAsync(string id);

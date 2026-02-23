@@ -41,6 +41,27 @@ public class PostsController : ControllerBase
         return Ok(posts);
     }
 
+    [HttpGet("published")]
+    public async Task<ActionResult<object>> GetPublished([FromQuery] string? categoryId = null, [FromQuery] int page = 1, [FromQuery] int pageSize = 6)
+    {
+        var posts = await _postService.GetPublishedAsync(categoryId);
+        var paged = posts.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        var totalPages = (int)Math.Ceiling(posts.Count / (double)pageSize);
+        return Ok(new { posts = paged, totalPages });
+    }
+
+    [HttpGet("published/{id}")]
+    public async Task<ActionResult<ReaderPostDto>> GetPublishedById(string id)
+    {
+        var post = await _postService.GetPublishedByIdAsync(id);
+        if (post is null)
+        {
+            return NotFound(new { message = "Published post not found." });
+        }
+
+        return Ok(post);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<PostResponseDto>> GetById(string id)
     {

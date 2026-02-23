@@ -37,6 +37,23 @@ public class PostRepository : IPostRepository
             .ToListAsync();
     }
 
+    public async Task<List<Post>> GetPublishedAsync(string? categoryId = null)
+    {
+        var filter = Builders<Post>.Filter.Eq(p => p.Status, "Published");
+
+        if (!string.IsNullOrWhiteSpace(categoryId))
+        {
+            filter = Builders<Post>.Filter.And(
+                filter,
+                Builders<Post>.Filter.Eq(p => p.CategoryId, categoryId)
+            );
+        }
+
+        return await _posts.Find(filter)
+            .SortByDescending(p => p.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task<Post?> UpdateAsync(string id, Post post)
     {
         var update = Builders<Post>.Update

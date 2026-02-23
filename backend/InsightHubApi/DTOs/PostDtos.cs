@@ -24,3 +24,15 @@ public record PostResponseDto(
     string Status,
     DateTime CreatedAt
 );
+
+public record ReaderPostDto(
+    string Id,
+    string Title,
+    string Content,
+    string CategoryId,
+    string CategoryName,
+    string AuthorId,
+    string AuthorName,
+    string Status,
+    DateTime CreatedAt
+);

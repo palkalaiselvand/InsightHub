@@ -10,6 +10,8 @@ public interface IPostRepository
 
     Task<List<Post>> GetAllAsync();
 
+    Task<List<Post>> GetPublishedAsync(string? categoryId = null);
+
     Task<Post?> UpdateAsync(string id, Post post);
 
     Task<bool> DeleteAsync(string id);
