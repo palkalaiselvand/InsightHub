@@ -10,6 +10,8 @@ import RegisterPage from "./pages/RegisterPage";
 import WriterCreatePage from "./pages/WriterCreatePage";
 import WriterDashboardPage from "./pages/WriterDashboardPage";
 import WriterEditPage from "./pages/WriterEditPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminPostsPage from "./pages/AdminPostsPage";
 
 export default function App() {
   return (
@@ -83,6 +85,22 @@ export default function App() {
         element={
           <RouteGuard>
             <CategoryPage />
+          </RouteGuard>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <RouteGuard role="Admin">
+            <AdminUsersPage />
+          </RouteGuard>
+        }
+      />
+      <Route
+        path="/admin/posts"
+        element={
+          <RouteGuard role="Admin">
+            <AdminPostsPage />
           </RouteGuard>
         }
       />

@@ -2,6 +2,8 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 interface Category {
   id: string;
@@ -54,7 +56,7 @@ export default function WriterCreatePage() {
         <input value={title} onChange={(e) => setTitle(e.target.value)} required />
 
         <label>Content</label>
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={8} required />
+        <ReactQuill value={content} onChange={setContent} theme="snow" />
 
         <label>Category</label>
         <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>

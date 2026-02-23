@@ -42,10 +42,12 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet("published")]
-    public async Task<ActionResult<List<ReaderPostDto>>> GetPublished([FromQuery] string? categoryId = null)
+    public async Task<ActionResult<object>> GetPublished([FromQuery] string? categoryId = null, [FromQuery] int page = 1, [FromQuery] int pageSize = 6)
     {
         var posts = await _postService.GetPublishedAsync(categoryId);
-        return Ok(posts);
+        var paged = posts.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        var totalPages = (int)Math.Ceiling(posts.Count / (double)pageSize);
+        return Ok(new { posts = paged, totalPages });
     }
 
     [HttpGet("published/{id}")]
